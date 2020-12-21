@@ -1,0 +1,47 @@
+<!--component-robin/schedule/schedule.wxml-->
+<view>
+  <view class="fww-rel bgdcolor-fff" style="border-radius: 0px 0px 24rpx 24rpx;" id="schedule">
+    <view style="height:88rpx" class="flex-between-center bgdcolor-fff">
+      <view style="margin-left:30rpx;">
+        <view class="fs36 color333" style="line-height:50rpx;font-weight: 600;">{{fullYear}}年{{month}}月</view>
+      </view>
+
+      <view>
+        <image src="/images/schedule/today.png" style="width:48rpx;height:48rpx" catchtap="onToToday"></image>
+        <image src="/images/schedule/list.png" style="width:48rpx;height:48rpx;margin-right:30rpx;margin-left:40rpx;" catchtap="onToAllList"></image>
+      </view>
+    </view>
+      <view class="grid7 fww-center" bindtouchstart='touchStart' bindtouchmove='touchMove' bindtouchend='touchEnd' animation="{{animation}}">
+          <block wx:for="{{weekList}}" wx:key="index" >
+            <view style="">
+              <view class="color99 fww-fs24" style="height: 72rpx;line-height:72rpx;">{{item.dayOfWeek}}</view>
+            </view>
+          </block>
+
+          <block wx:for="{{monthList}}" wx:key="index">
+              <view style="height:88rpx" 
+                wx:if="{{isChecked ? true : (index < 7)}}" 
+                catchtap="onCheckedDay"  data-item="{{item}}" data-index="{{index}}" class="boxS flex-center-center" >
+                <view class="{{item.isCheck ? 'dayBox' : (item.isDay && !item.isCheck? 'dayBoxNocheck': (item.isDay? 'dayBox' : ''))}} boxS flex-column-center" 
+                  style="width:88rpx;padding: 6rpx;">
+                  <view class="fww-fs36 boxS {{item.isBefore || item.isAfter ? 'colDDD' : (item.isCheck ? 'colorff' : (item.isDay && !item.isCheck ? 'col115': ( item.isDay ? 'colorff' : 'col000')))}}"
+                      style="height: 35rpx;line-height:35rpx;">{{item.isDay ? "今" : item.Gregorian}}</view>
+                  <view class="fww-fs20 {{item.isBefore || item.isAfter ? 'colDDD' : (item.isCheck ? 'colorff' : (item.isDay && !item.isCheck ? 'col115': (item.isDay ? 'colorff' : 'colBBB')))}} boxS"
+                  style="line-height:28rpx;">{{item.lunar.festival ? item.lunar.festival: (item.lunar.lunarFestival ? item.lunar.lunarFestival : (item.lunar.IDayCn == "初一" ? item.lunar.IMonthCn : item.lunar.IDayCn))}}</view>
+                  <view 
+                    class="{{item.isCheck && item.isEvent ? 'todayCircleBox': (item.isDay && !item.isCheck && item.isEvent ? 'noCircleBox' : (item.isEvent ? 'circleBox' : 'box'))}} boxS"
+                    style="margin-top:6rpx;"
+                    ></view>
+                </view>
+              </view>
+          </block>
+      </view>
+
+      <view style="width:100%;height:24rpx;padding-top:30rpx;" class="flex-center-center" catchtap="onTochange">
+        <view style="width:50%;height:24rpx;" class="flex-center-center">
+          <image src="{{isChecked ? '/images/schedule/close1.png' : '/images/schedule/unfold.png'}}" style="width:46rpx;height:24rpx" ></image>
+        </view>
+        
+      </view>
+  </view>
+</view>
